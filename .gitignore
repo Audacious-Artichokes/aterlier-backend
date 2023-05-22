@@ -1,0 +1,12 @@
+.DS_STORE
+
+.env
+
+node_modules/
+
+dist/
+
+lib-cov
+coverage
+
+package-lock.json

@@ -1,0 +1,32 @@
+{
+  "name": "atelier-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "server-dev": "nodemon server/app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Audacious-Artichokes/atelier-backend.git"
+  },
+  "author": "Rachel Miller, Michael Del Pape, Rachel Miller",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Audacious-Artichokes/atelier-backend/issues"
+  },
+  "homepage": "https://github.com/Audacious-Artichokes/atelier-backend#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "morgan": "^1.10.0",
+    "nodemon": "^2.0.22"
+  },
+  "devDependencies": {
+    "eslint": "^8.41.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.27.5"
+  }
+}
