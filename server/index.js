@@ -1,9 +1,11 @@
 require('dotenv').config();
-const path = require('path');
+// const path = require('path');
 
 const express = require('express');
 const morgan = require('morgan');
 const cors = require('cors');
+
+const routes = require('./routes/index');
 
 const app = express();
 
@@ -16,5 +18,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 // Set up routes
+app.use(routes);
 
 module.exports = app;
