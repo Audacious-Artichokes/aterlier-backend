@@ -66,7 +66,7 @@ INSERT INTO photo (photo_id, style_id, product_id, thumbmail_url, url)
     thumbmail_url, url
   FROM temp_photo;
 
-DROP TABLE temp_photo;`
+DROP TABLE temp_photo;
 
 -- SKU TABLE --
 
