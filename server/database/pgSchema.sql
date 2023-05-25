@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS style (
   style_id serial PRIMARY KEY,
   product_id  serial,
   name VARCHAR(200),
-  sale_price  NUMERIC(20, 2) DEFAULT NULL,
+  sale_price  NUMERIC(20, 2) NULL,
   original_price NUMERIC(20, 2),
   default_style BOOLEAN,
   FOREIGN KEY (product_id)
@@ -68,4 +68,3 @@ CREATE TABLE IF NOT EXISTS sku (
   FOREIGN KEY (style_id)
     REFERENCES style (style_id)
 );
-
