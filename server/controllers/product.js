@@ -17,7 +17,20 @@ module.exports.product = {
       [count * (page - 1) + 1, count * page],
     )
       .then((result) => {
-        res.status(200).send(result.rows);
+        const resObj = result.rows.map((row) => {
+          const {
+            name, slogan, description, category,
+          } = row;
+          return {
+            id: row.product_id,
+            name,
+            slogan,
+            description,
+            category,
+            default_price: row.default_price,
+          };
+        });
+        res.status(200).send(resObj);
       })
       .catch(() => res.status(500).send('Bad query'));
   },
@@ -25,25 +38,15 @@ module.exports.product = {
   getProduct: (req, res) => {
     const productId = req.query.product_id;
 
-    const productInfo = {
-      text: 'SELECT * FROM product WHERE product_id = $1',
-      values: [productId],
-    };
-
-    const featureInfo = {
-      text: 'SELECT * FROM feature WHERE product_id = $1',
-      values: [productId],
-    };
-
     Promise.all([
-      pgPool.query(productInfo),
-      pgPool.query(featureInfo),
+      pgPool.query(queryInfoForProduct('product', productId)),
+      pgPool.query(queryInfoForProduct('feature', productId)),
     ])
       .then((result) => {
-        console.log(result[1].rows);
-        const productRes = result[0].rows[0];
-        productRes.features = result[1].rows || {};
-        res.status(200).send(productRes);
+        const resObj = result[0].rows[0];
+        resObj.features = result[1].rows.map((row) => (
+          { feature: row.feature, value: row.value })) || {};
+        res.status(200).send(resObj);
       })
       .catch((error) => { res.status(500).send(error.message); });
   },
@@ -59,10 +62,40 @@ module.exports.product = {
     ])
       .then((result) => {
         const product = result[0].rows;
-        const style = result[1].rows;
-        const photo = result[2].rows;
-        const sku = result[3].rows;
-        res.status(200).send([product, style, photo, sku]);
+        const resObj = { product_id: productId };
+        const styles = result[1].rows;
+        const photos = result[2].rows;
+        const skus = result[3].rows;
+
+        const skuForStyle = (skuArr, styleId) => {
+          const styleSKU = {};
+          skuArr.forEach((sku) => {
+            if (sku.style_id === styleId) {
+              styleSKU[sku.sku_id] = { quantity: sku.qty, size: sku.size };
+            }
+          });
+          return styleSKU;
+        };
+
+        const photoForStyle = (photoArr, styleId) => {
+          const stylePhoto = [];
+          photoArr.forEach((photo) => {
+            if (photo.style_id === styleId) {
+              stylePhoto.push({ thumbnail_url: photo.thumbnail_url, url: photo.url });
+            }
+          });
+        };
+
+        resObj.results = styles.map((style) => ({
+          style_id: style.style_id,
+          name: style.name,
+          original_price: style.original_price,
+          sale_price: style.sale_price,
+          'default?': style.default_style,
+          photos: photoForStyle(photos, style.style_id),
+          skus: skuForStyle(skus, style.style_id),
+        }));
+        res.status(200).send(resObj);
       })
       .catch((error) => { res.status(500).send(error.message); });
   },
