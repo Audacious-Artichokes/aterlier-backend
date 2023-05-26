@@ -1,7 +1,16 @@
 const pgPool = require('../database/db');
 
 const queryInfoForProduct = (table, productid) => ({
-  text: `SELECT * FROM ${table} WHERE product_id = $1`,
+  text: `SELECT * FROM ${table}
+  WHERE product_id = $1
+  `,
+  values: [productid],
+});
+const getProduct = (productid) => ({
+  text: `SELECT product_id FROM product
+  JOIN
+  WHERE product_id = $1
+  `,
   values: [productid],
 });
 
@@ -55,17 +64,15 @@ module.exports.product = {
     const productId = req.query.product_id;
 
     Promise.all([
-      pgPool.query(queryInfoForProduct('product', productId)),
       pgPool.query(queryInfoForProduct('style', productId)),
       pgPool.query(queryInfoForProduct('photo', productId)),
       pgPool.query(queryInfoForProduct('sku', productId)),
     ])
       .then((result) => {
-        const product = result[0].rows;
         const resObj = { product_id: productId };
-        const styles = result[1].rows;
-        const photos = result[2].rows;
-        const skus = result[3].rows;
+        const styles = result[0].rows;
+        const photos = result[1].rows;
+        const skus = result[2].rows;
 
         const skuForStyle = (skuArr, styleId) => {
           const styleSKU = {};
@@ -84,6 +91,7 @@ module.exports.product = {
               stylePhoto.push({ thumbnail_url: photo.thumbnail_url, url: photo.url });
             }
           });
+          return stylePhoto;
         };
 
         resObj.results = styles.map((style) => ({
@@ -101,12 +109,20 @@ module.exports.product = {
   },
 
   getRelated: (req, res) => {
-    const productId = req.query.product_id;
+    const productId = Number(req.query.product_id);
 
     pgPool.query('SELECT * FROM related WHERE (product_id1= $1 OR product_id2=$1)', [productId])
       .then((result) => {
-        console.log(result.rows);
-        res.status(200).send(result.rows);
+        const resObj = new Set();
+        result.rows.forEach((row) => {
+          if (row.product_id1 !== productId) {
+            resObj.add(row.product_id1);
+          }
+          if (row.product_id2 !== productId) {
+            resObj.add(row.product_id2);
+          }
+        });
+        res.status(200).send([...resObj]);
       })
       .catch((error) => { res.status(500).send(error.message); });
   },
