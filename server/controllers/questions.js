@@ -14,8 +14,8 @@ exports.questions = {
   },
   markAsHelpful: (req, res) => {
     console.log('PUT REQUEST FOR HELPFUL Qs ', req.body);
-  }
+  },
   report: (req, res) => {
     console.log('PUT REQUEST FOR REPORT Qs', req.body);
-  }
-}
+  },
+};

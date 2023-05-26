@@ -11,8 +11,9 @@ module.exports = {
     sourceType: 'module',
   },
   rules: {
-    "no-unused-vars": "warn",
-    "no-console": "off",
-    "no-plusplus": "off",
+    'no-unused-vars': 'warn',
+    'no-console': 'off',
+    'no-plusplus': 'off',
+    'import/no-extraneous-dependencies': ['error', { devDependencies: true }],
   },
 };
