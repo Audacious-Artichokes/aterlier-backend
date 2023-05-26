@@ -1,4 +1,4 @@
-const reviewPool = require('server/db/postgres.js');
+const reviewPool = require('../db/postgres.js');
 
 module.exports.review = {
   getReviews: (req, res) => {

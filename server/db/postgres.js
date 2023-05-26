@@ -6,12 +6,13 @@ const csv = require('csv-parser');
 const createCsvWriter = require('csv-writer').createObjectCsvWriter;
 
 // eslint-disable-next-line import/prefer-default-export
-export const reviewPool = new Pool({
+const reviewPool = new Pool({
   user: process.env.USER,
   host: process.env.HOST,
   database: process.env.DATABASE,
   port: process.env.DBPORT,
 });
+
 
 async function connectAndCreateSchema() {
   const client = new Client({
@@ -57,6 +58,7 @@ async function connectAndCreateSchema() {
   client.end();
 }
 
+module.exports = reviewPool;
 // connectAndCreateSchema();
 // connectAndCreateSchema().then(async () => {
 //   const client = new Client({

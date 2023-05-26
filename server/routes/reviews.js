@@ -1,4 +1,5 @@
-const review = require('../controllers/reviews');
+// eslint-disable-next-line import/extensions
+const review = require('../controllers/reviews.js');
 
 module.exports = (app) => {
   app.get('/reviews', review.getReviews);
