@@ -62,7 +62,7 @@ COPY temp_photo FROM '/Users/thanghnguyen/git_repos/hackreactor/sdc/atelier-back
 INSERT INTO photo (photo_id, style_id, product_id, thumbmail_url, url)
   SELECT
     photo_id, style_id,
-    (SELECT product_id FROM style WHERE style_id = style.style_id LIMIT 1),
+    (SELECT product_id FROM style WHERE temp_photo.style_id = style.style_id LIMIT 1),
     thumbmail_url, url
   FROM temp_photo;
 
@@ -83,7 +83,7 @@ COPY temp_sku FROM '/Users/thanghnguyen/git_repos/hackreactor/sdc/atelier-backen
 INSERT INTO sku (sku_id, style_id, product_id, qty, size)
   SELECT
     sku_id, style_id,
-    (SELECT product_id FROM style WHERE style_id = style.style_id LIMIT 1),
+    (SELECT product_id FROM style WHERE temp_sku.style_id = style.style_id LIMIT 1),
     qty, size
   FROM temp_sku;
 
