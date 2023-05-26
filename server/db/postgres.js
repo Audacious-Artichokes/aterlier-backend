@@ -1,9 +1,17 @@
-const { Client } = require('pg');
+const { Pool, Client } = require('pg');
 const fs = require('fs');
 // eslint-disable-next-line import/no-extraneous-dependencies
 const csv = require('csv-parser');
 // eslint-disable-next-line import/no-extraneous-dependencies
 const createCsvWriter = require('csv-writer').createObjectCsvWriter;
+
+// eslint-disable-next-line import/prefer-default-export
+export const reviewPool = new Pool({
+  user: process.env.USER,
+  host: process.env.HOST,
+  database: process.env.DATABASE,
+  port: process.env.DBPORT,
+});
 
 async function connectAndCreateSchema() {
   const client = new Client({
@@ -49,41 +57,7 @@ async function connectAndCreateSchema() {
   client.end();
 }
 
-// const csvWriter = createCsvWriter({
-//   path: `${__dirname}/output.csv`,
-//   header: [
-//     { id: 'id', title: 'id' },
-//     { id: 'product_id', title: 'product_id' },
-//     { id: 'rating', title: 'rating' },
-//     { id: 'date', title: 'date' },
-//     { id: 'summary', title: 'summary' },
-//     { id: 'body', title: 'body' },
-//     { id: 'recommend', title: 'recommend' },
-//     { id: 'reported', title: 'reported' },
-//     { id: 'reviewer_name', title: 'reviewer_name' },
-//     { id: 'reviewer_email', title: 'reviewer_email' },
-//     { id: 'response', title: 'response' },
-//     { id: 'helpfulness', title: 'helpfulness' },
-//   ],
-// });
-
-// fs.createReadStream(`${__dirname}/reviews.csv`)
-//   .pipe(csv())
-//   .on('data', (row) => {
-//     // console.log(row.date)
-//     if (row.date && Number(row.date)) {
-//       row.date = new Date(row.date * 1).toISOString();
-//       csvWriter.writeRecords([row]);
-//       // console.log('wrote line to file');
-//     } else {
-//       console.log('failed');
-//     }
-//   })
-// .on('error', (err) => {
-//   console.error('Error reading the CSV file:', err);
-// });
-console.log(__dirname);
-connectAndCreateSchema();
+// connectAndCreateSchema();
 // connectAndCreateSchema().then(async () => {
 //   const client = new Client({
 //     database: 'reviews',
