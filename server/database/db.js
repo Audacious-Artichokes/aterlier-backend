@@ -7,14 +7,21 @@ const pgPool = new Pool({
   host: process.env.PGHOST,
   database: process.env.PGDATABASE,
   port: process.env.PGPORT,
-});
+})
 
-const pgClient = new Client({
-  user: process.env.PGUSER,
-  host: process.env.PGHOST,
-  database: process.env.PGDATABASE,
-  port: process.env.PGPORT,
-});
+// const pgClient = await pgPool.connect()
+//   .then((nClient) => {
+//     console.log('Pool connect to PG db. \n');
+//     return nClient;
+//   })
+//   .catch((error) => console.log('Error at connection: ', error));
+
+// const pgClient = new Client({
+//   user: process.env.PGUSER,
+//   host: process.env.PGHOST,
+//   database: process.env.PGDATABASE,
+//   port: process.env.PGPORT,
+// });
 
 const countlines = (fp) => new Promise((resolve, reject) => {
   let count = 0;
@@ -29,13 +36,8 @@ const countlines = (fp) => new Promise((resolve, reject) => {
 });
 
 const validatePGDatabase = async () => {
-  if (process.env.PG_INIT) {
-    const client = await pgPool.connect()
-      .then((nClient) => {
-        console.log('Pool connect to PG db. \n');
-        return nClient;
-      })
-      .catch((error) => console.log('Error at connection: ', error));
+  if (Number(process.env.PG_INIT)) {
+    const client = pgPool;
 
     console.log('-- VALIDATING DATA LOADED --');
 
@@ -74,6 +76,4 @@ const validatePGDatabase = async () => {
 
 validatePGDatabase();
 
-pgPool.end();
-
-module.exports.pg = { pgClient, pgPool, validatePGDatabase };
+module.exports = pgPool;
