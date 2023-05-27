@@ -59,7 +59,7 @@ CREATE TABLE IF NOT EXISTS temp_photo (
 COPY temp_photo FROM '/Users/thanghnguyen/git_repos/hackreactor/sdc/atelier-backend-product/server/data/photos.csv'
   DELIMITER ',' CSV HEADER;
 
-INSERT INTO photo (photo_id, style_id, product_id, thumbmail_url, url)
+INSERT INTO photo (photo_id, style_id, product_id, thumbnail_url, url)
   SELECT
     photo_id, style_id,
     (SELECT product_id FROM style WHERE temp_photo.style_id = style.style_id LIMIT 1),
