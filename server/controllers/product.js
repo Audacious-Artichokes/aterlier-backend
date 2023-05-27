@@ -26,33 +26,35 @@ module.exports.product = {
       [count * (page - 1) + 1, count * page],
     )
       .then((result) => {
-        const resObj = result.rows.map((row) => {
-          const {
-            name, slogan, description, category,
-          } = row;
-          return {
-            id: row.product_id,
-            name,
-            slogan,
-            description,
-            category,
-            default_price: row.default_price,
-          };
-        });
+        const resObj = result.rows.map((row) => ({
+          id: row.product_id,
+          name: row.name,
+          slogan: row.slogan,
+          description: row.description,
+          category: row.category,
+          default_price: row.default_price,
+        }));
         res.status(200).send(resObj);
       })
       .catch(() => res.status(500).send('Bad query'));
   },
 
   getProduct: (req, res) => {
-    const productId = req.query.product_id;
+    const productId = req.query.product_id || req.params.product_id;
 
     Promise.all([
       pgPool.query(queryInfoForProduct('product', productId)),
       pgPool.query(queryInfoForProduct('feature', productId)),
     ])
       .then((result) => {
-        const resObj = result[0].rows[0];
+        const product = result[0].rows[0];
+        const resObj = {
+          id: product.product_id,
+          name: product.name,
+          slogan: product.slogan,
+          description: product.description,
+          default_price: product.default_price,
+        };
         resObj.features = result[1].rows.map((row) => (
           { feature: row.feature, value: row.value })) || {};
         res.status(200).send(resObj);
@@ -61,7 +63,7 @@ module.exports.product = {
   },
 
   getStyles: (req, res) => {
-    const productId = req.query.product_id;
+    const productId = req.query.product_id || req.params.product_id;
 
     Promise.all([
       pgPool.query(queryInfoForProduct('style', productId)),
@@ -91,13 +93,13 @@ module.exports.product = {
               stylePhoto.push({ thumbnail_url: photo.thumbnail_url, url: photo.url });
             }
           });
-          return stylePhoto;
+          return stylePhoto.length === 0 ? [{ thumbnail_url: 'https://images.unsplash.com/photo-1517278322228-3fe7a86cf6f0?ixlib=rb-1.2.1&auto=format&fit=crop&w=1567&q=80', url: 'https://images.unsplash.com/photo-1553830591-2f39e38a013c?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80' }] : stylePhoto;
         };
 
         resObj.results = styles.map((style) => ({
           style_id: style.style_id,
           name: style.name,
-          original_price: style.original_price,
+          original_price: style.original_price || null,
           sale_price: style.sale_price,
           'default?': style.default_style,
           photos: photoForStyle(photos, style.style_id),
@@ -109,7 +111,7 @@ module.exports.product = {
   },
 
   getRelated: (req, res) => {
-    const productId = Number(req.query.product_id);
+    const productId = Number(req.query.product_id || req.params.product_id);
 
     pgPool.query('SELECT * FROM related WHERE (product_id1= $1 OR product_id2=$1)', [productId])
       .then((result) => {
