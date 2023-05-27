@@ -9,7 +9,7 @@ const createCsvWriter = require('csv-writer').createObjectCsvWriter;
 const reviewPool = new Pool({
   user: process.env.USER,
   host: process.env.HOST,
-  database: process.env.DATABASE,
+  database: process.env.DB_NAME,
   port: process.env.DBPORT,
 });
 
