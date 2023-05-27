@@ -49,7 +49,7 @@ CREATE TABLE IF NOT EXISTS photo (
   photo_id serial PRIMARY KEY,
   style_id serial,
   product_id  serial,
-  thumbmail_url VARCHAR(100000),
+  thumbnail_url VARCHAR(100000),
   url VARCHAR(100000),
   FOREIGN KEY (product_id)
     REFERENCES product (product_id),
