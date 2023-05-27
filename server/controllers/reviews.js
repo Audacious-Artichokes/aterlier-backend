@@ -54,7 +54,7 @@ module.exports.review = {
             results: resultArr,
           };
 
-          res.status(200).send(data);
+          res.status(201).send(data);
         }).catch((err) => {
           console.error(err);
           res.status(500).send('Bad Query');
