@@ -3,5 +3,6 @@ node_modules
 answers_photos.csv
 answers.csv
 questions.csv
-sample.csv
-answers_output.csv
+answerOutput.csv
+answerPhotoOutput.csv
+questOutput.csv

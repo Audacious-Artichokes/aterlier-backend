@@ -18,11 +18,8 @@ CREATE TABLE questions (
   helpful INT
 );
 
-COPY questions FROM '/Users/rachel/Desktop/HackReactor/SDC/server/csv-files/questions.csv'
+COPY questions FROM '/Users/rachel/Desktop/HackReactor/SDC2/server/csv-files/questOutput.csv'
   DELIMITER '~';
-
--- INSERT INTO questions (id, product_id, body, date_written, asker_name, asker_email, reported, helpful)
---   VALUES (36, 2, 'what is love?', 'bbdont hurt me', 'no more', 'email@email.com', true, 10);
 
 CREATE TABLE answers (
   id serial PRIMARY KEY,
@@ -39,7 +36,7 @@ CREATE TABLE answers (
       ON DELETE SET NULL
 );
 
-COPY answers FROM '/Users/rachel/Desktop/HackReactor/SDC/server/csv-files/answers.csv'
+COPY answers FROM '/Users/rachel/Desktop/HackReactor/SDC2/server/csv-files/answerOutput.csv'
   DELIMITER '~';
 
 CREATE TABLE answerPhotos (
@@ -47,7 +44,7 @@ CREATE TABLE answerPhotos (
   answer_id INT,
   url TEXT,
   FOREIGN KEY (answer_id) REFERENCES answers(id)
-)
+);
 
-COPY answers FROM '/Users/rachel/Desktop/HackReactor/SDC/server/csv-files/answers_photos.csv'
+COPY answerPhotos FROM '/Users/rachel/Desktop/HackReactor/SDC2/server/csv-files/answerPhotoOutput.csv'
   DELIMITER '~';
