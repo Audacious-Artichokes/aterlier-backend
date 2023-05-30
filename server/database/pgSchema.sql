@@ -1,8 +1,13 @@
 \c postgres;
 
-DROP DATABASE IF EXISTS sdcproduct;
-
 CREATE DATABASE sdcproduct;
+
+DROP TABLE IF EXISTS product;
+DROP TABLE IF EXISTS related;
+DROP TABLE IF EXISTS feature;
+DROP TABLE IF EXISTS style;
+DROP TABLE IF EXISTS photo;
+DROP TABLE IF EXISTS sku;
 
 \c sdcproduct;
 
@@ -25,6 +30,10 @@ CREATE TABLE IF NOT EXISTS related (
     REFERENCES product (product_id)
 );
 
+CREATE INDEX product1_related_idx ON related (product_id1);
+CREATE INDEX product2_related_idx ON related (product_id2);
+CREATE INDEX comp_product1_product2_related_idx ON related (product_id1, product_id2);
+
 CREATE TABLE IF NOT EXISTS feature (
   feature_id serial PRIMARY KEY,
   product_id  serial,
@@ -33,6 +42,8 @@ CREATE TABLE IF NOT EXISTS feature (
   FOREIGN KEY (product_id)
     REFERENCES product (product_id)
 );
+
+CREATE INDEX product_feature_idx on feature (product_id);
 
 CREATE TABLE IF NOT EXISTS style (
   style_id serial PRIMARY KEY,
@@ -44,6 +55,8 @@ CREATE TABLE IF NOT EXISTS style (
   FOREIGN KEY (product_id)
     REFERENCES product (product_id)
 );
+
+CREATE INDEX product_style_idx on style (product_id);
 
 CREATE TABLE IF NOT EXISTS photo (
   photo_id serial PRIMARY KEY,
@@ -57,6 +70,9 @@ CREATE TABLE IF NOT EXISTS photo (
     REFERENCES style (style_id)
 );
 
+-- CREATE INDEX product_photo_idx on photo (product_id);
+CREATE INDEX style_photo_idx on photo (style_id);
+
 CREATE TABLE IF NOT EXISTS sku (
   sku_id serial PRIMARY KEY,
   style_id serial,
@@ -68,3 +84,5 @@ CREATE TABLE IF NOT EXISTS sku (
   FOREIGN KEY (style_id)
     REFERENCES style (style_id)
 );
+
+CREATE INDEX style_sku_idx on sku (style_id);
