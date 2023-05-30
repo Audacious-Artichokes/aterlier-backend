@@ -1,6 +1,6 @@
 /* eslint-disable camelcase */
 /* eslint-disable radix */
-const reviewPool = require('../db/postgres');
+const reviewPool = require('../db/postgres.js');
 
 module.exports.review = {
   getReviews: (req, res) => {
@@ -57,12 +57,12 @@ module.exports.review = {
           res.status(201).send(data);
         }).catch((err) => {
           console.error(err);
-          res.status(500).send('Bad Query');
+          res.status(500).send(err);
         });
       })
       .catch((err) => {
         console.error(err);
-        res.status(500).send('Bad Query');
+        res.status(500).send(err);
       });
   },
   getMeta: (req, res) => {
@@ -150,6 +150,12 @@ module.exports.review = {
           recommended,
           characteristics: charholder,
         });
+      })
+      .catch((err) => {
+        res.status(500).send(err);
       });
   },
+  // postRev: (req, res) => {
+  //   console.log(req);
+  // },
 };
