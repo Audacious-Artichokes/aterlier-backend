@@ -6,8 +6,8 @@ const pgPool = new Pool({
   user: process.env.PGUSER,
   host: process.env.PGHOST,
   database: process.env.PGDATABASE,
-  port: process.env.PGPORT,
-})
+  port: process.env.PGPORT || 5432,
+});
 
 // const pgClient = await pgPool.connect()
 //   .then((nClient) => {
