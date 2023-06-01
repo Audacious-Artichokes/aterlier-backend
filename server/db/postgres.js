@@ -41,7 +41,7 @@ async function connectAndCreateSchema() {
       id SERIAL primary key,
       product_id int,
       name varchar(50)
-    )
+    );
 
     CREATE TABLE revs (
       id SERIAL primary key,
@@ -63,13 +63,13 @@ async function connectAndCreateSchema() {
       characteristic_id SERIAL,
       review_id int REFERENCES revs(id),
       value int
-    )
+    );
 
     CREATE TABLE revPhotos (
       id SERIAL PRIMARY KEY,
       review_id INT REFERENCES revs(id),
       url VARCHAR(500)
-      )
+      );
     `,
 
   );
