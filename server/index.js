@@ -1,5 +1,4 @@
 require('dotenv').config();
-// const path = require('path');
 
 const express = require('express');
 const morgan = require('morgan');
@@ -18,6 +17,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 // Set up routes
-app.use(routes);
+routes(app);
 
 module.exports = app;

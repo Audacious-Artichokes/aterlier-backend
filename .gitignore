@@ -10,3 +10,5 @@ lib-cov
 coverage
 
 package-lock.json
+
+server/db/characteristics.csv
