@@ -1,7 +1,7 @@
 {
-  "name": "atelier-backend",
+  "name": "atelier-backend-questions-answers",
   "version": "1.0.0",
-  "description": "",
+  "description": "Back end service for all Questions and Answers related to front end of Atelier ecommerce",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -9,9 +9,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Audacious-Artichokes/atelier-backend.git"
+    "url": "https://github.com/Audacious-Artichokes/atelier-backend-questions-answers.git"
   },
-  "author": "Rachel Miller, Michael Del Pape, Rachel Miller",
+  "author": "Rachel Miller",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/Audacious-Artichokes/atelier-backend/issues"
